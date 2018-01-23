@@ -7,6 +7,10 @@
 # TO DO: Fail Positive - Any input will generate positive words (i.e. ' or -)
 # TO DO: Continuous colourful Scrolling 
 
+#ps version 2
+#$PSScriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
+
+
 Function Color{
     Param(
         [Parameter(Mandatory=$true)][string]$Name,
@@ -33,13 +37,20 @@ Function Color{
         $WordWithSpaces
         Write-Host "-------------------"
 
-        # TO DO: Create the filename to get the wordlist file, dynamically
+        # TO DO: Create the filename to get the wordlist file, dynamically        
         $CSVFileName = $Letter+" words.csv"
-        $CSVFileToReadin = "C:\Users\Administrator\Documents\"+$CSVFileName
+        $CSVFileToReadin = $PSScriptRoot+"\"+$CSVFileName
 
         # Read in positive wordlist - i.e. "O Words.csv" 
         # Get wordlist in current folder, starting with the selected letter
-        $DelimitedWords = Get-Content -Path $CSVFileToReadin
+        try {
+            $DelimitedWords = Get-Content -Path $CSVFileToReadin -ErrorAction Stop
+        } catch { 
+            #TO DO: Create a catch-all word list
+            $DelimitedWords = Get-Content -Path $PSScriptRoot"\A words.csv"
+        }
+               
+
         $SingleWord = $DelimitedWords.split(",")
         $SingleWord = $SingleWord.Replace(" ","")
         #Write-Host "-------------------"
@@ -51,8 +62,8 @@ Function Color{
         # TO DO: Remove hardcoding
         #$LetterIndex
         Switch ($LetterIndex) {
-
-            1 {}
+            #TO DO: Allow for More than 5 letter Names
+            1 {$RandomWord}
             2 {$RandomWord = "   "+$RandomWord
                 $RandomWord}
             3 {$RandomWord = "    "+$RandomWord
