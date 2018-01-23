@@ -11,7 +11,7 @@
 #$PSScriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
 
 
-Function Color{
+Function Colour{
     Param(
         [Parameter(Mandatory=$true)][string]$Name,
         [int]$LetterIndex=0
@@ -35,41 +35,49 @@ Function Color{
         $LetterIndex += 1
         #$LetterIndex
         $WordWithSpaces +=$Letter + " "
-        Write-Output "-------------------" 
-        $WordWithSpaces
-        Write-Output "-------------------"
-
-        # TO DO: Create the filename to get the wordlist file, dynamically        
+       
         $CSVFileName = $Letter+" words.csv"
+        $CSVColourFileName = "Colours.csv"
         $CSVFileToReadin = $PSScriptRoot+"\Wordslists\"+$CSVFileName
+        $CSVColourFileToReadin = $PSScriptRoot+"\Colourlist\"+$CSVColourFileName
 
         # Read in positive wordlist - i.e. "O Words.csv" 
         # Get wordlist in current folder, starting with the selected letter
         try {
             $DelimitedWords = Get-Content -Path $CSVFileToReadin -ErrorAction Stop
         } catch { 
-            #TO DO: Create a catch-all word list
             $DelimitedWords = Get-Content -Path $PSScriptRoot"\Wordslists\AnyWords.csv"
-        }
-               
-
+        }        
         $SingleWord = $DelimitedWords.split(",")
         $SingleWord = $SingleWord.Trim()
-        #Write-Output "-------------------"
 
         # Select a word to use randomly
         $RandomWord=Get-Random -InputObject $SingleWord
-        #$RandomWord
-        # TO DO: Select random Color
-        # TO DO: Remove hardcoding
-        #$LetterIndex
+
+
+        # Select random Colour
+        try {
+            $DelimitedColours = Get-Content -Path $CSVColourFileToReadin -ErrorAction Stop
+        } catch { 
+            Write-Output "No Colours file found."
+        }
+               
+        $SingleColour = $DelimitedColours.split(",")
+        $SingleColour = $SingleColour.Trim()
+        #Write-Output "-------------------"
+        $RandomColour=Get-Random -InputObject $SingleColour
+
         #TO DO:  Allow for More than 5 letter Names
         $WhiteSpace = $LetterIndex*2-2
         $Space = $RandomWord.Length
         $Space = $Space + $WhiteSpace
         $RandomWord = $RandomWord.PadLeft($Space)
         Start-Sleep -s 1.2
-        $RandomWord
+
+        Write-Output "-------------------" 
+         Write-Host $WordWithSpaces -ForegroundColor $RandomColour -BackgroundColor DarkBlue
+        Write-Output "-------------------"
+        Write-Host $RandomWord -ForegroundColor $RandomColour -BackgroundColor DarkBlue
 
         Write-Output "-  -  -  -  -  -  -"
         Write-Output "-------------------"
@@ -85,10 +93,10 @@ do{
     $StatusGood = $true
     Try {
         # Continuous Looping
-        # Color -Name "Name Of Person you Love"
+        # Colour -Name "Name Of Person you Love"
 
         # Loops once
-        Color 
+        Colour 
     } Catch { 
         $StatusGood = $false 
         Write-Output "----------------------------------------------------"
