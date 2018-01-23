@@ -17,29 +17,31 @@ Function Color{
         [int]$LetterIndex=0
     )
 
+
     # Display the Name - plain
-    Write-Host "-------------------"
-    $Name
-    Write-Host "-------------------"
+    Write-Output "-  -  -  -  -  -  -"
+    Write-Output "-------------------"
+    $Name.ToUpper()
+    Write-Output "-------------------"
+    Write-Output "-  -  -  -  -  -  -"
 
     # Extract Letters of the word 
     $Letters = $Name.ToCharArray()
     #$Letters
-    #Write-Host "-------------------"
+    #Write-Output "-------------------"
 
-    # TO DO: Display Name with Spaces inbetween
     Foreach ($Letter in $Letters){
     
         $LetterIndex += 1
         #$LetterIndex
         $WordWithSpaces +=$Letter + " "
-        Write-Host "-------------------" 
+        Write-Output "-------------------" 
         $WordWithSpaces
-        Write-Host "-------------------"
+        Write-Output "-------------------"
 
         # TO DO: Create the filename to get the wordlist file, dynamically        
         $CSVFileName = $Letter+" words.csv"
-        $CSVFileToReadin = $PSScriptRoot+"\"+$CSVFileName
+        $CSVFileToReadin = $PSScriptRoot+"\Wordslists\"+$CSVFileName
 
         # Read in positive wordlist - i.e. "O Words.csv" 
         # Get wordlist in current folder, starting with the selected letter
@@ -47,13 +49,13 @@ Function Color{
             $DelimitedWords = Get-Content -Path $CSVFileToReadin -ErrorAction Stop
         } catch { 
             #TO DO: Create a catch-all word list
-            $DelimitedWords = Get-Content -Path $PSScriptRoot"\A words.csv"
+            $DelimitedWords = Get-Content -Path $PSScriptRoot"\Wordslists\AnyWords.csv"
         }
                
 
         $SingleWord = $DelimitedWords.split(",")
-        $SingleWord = $SingleWord.Replace(" ","")
-        #Write-Host "-------------------"
+        $SingleWord = $SingleWord.Trim()
+        #Write-Output "-------------------"
 
         # Select a word to use randomly
         $RandomWord=Get-Random -InputObject $SingleWord
@@ -61,27 +63,40 @@ Function Color{
         # TO DO: Select random Color
         # TO DO: Remove hardcoding
         #$LetterIndex
-        Switch ($LetterIndex) {
-            #TO DO: Allow for More than 5 letter Names
-            1 {$RandomWord}
-            2 {$RandomWord = "   "+$RandomWord
-                $RandomWord}
-            3 {$RandomWord = "    "+$RandomWord
-                $RandomWord}
-            4 {$RandomWord = "      "+$RandomWord
-                $RandomWord}
-            5 {$RandomWord = "        "+$RandomWord
-                $RandomWord }
-        }
+        #TO DO:  Allow for More than 5 letter Names
+        $WhiteSpace = $LetterIndex*2-2
+        $Space = $RandomWord.Length
+        $Space = $Space + $WhiteSpace
+        $RandomWord = $RandomWord.PadLeft($Space)
+        Start-Sleep -s 1.2
+        $RandomWord
 
-        # Display Letters on new line
-        #$JuxtaposWord = $RandomWord.ToCharArray()
-        # TO DO: Add offset to each letter, based on Index
+        Write-Output "-  -  -  -  -  -  -"
+        Write-Output "-------------------"
 
+        Start-Sleep -s 1.2
 
     } 
 
  }
 
 # Call Function - executes once (Testing purposes)
-Color
+do{
+    $StatusGood = $true
+    Try {
+        # Continuous Looping
+        # Color -Name "Name Of Person you Love"
+
+        # Loops once
+        Color 
+    } Catch { 
+        $StatusGood = $false 
+        Write-Output "----------------------------------------------------"
+        Write-Output "ERROR - Please supply the Name of the Person you Love"
+        Write-Output "----------------------------------------------------"
+        # Start Script again
+        Set-Location -Path $PSScriptRoot
+        .\HappyValentines.ps1
+    }
+} while ($StatusGood)
+
