@@ -17,6 +17,7 @@ Function Colour{
 
 
     # Display the Name - plain
+    Write-Output "`nControl + C to Quit"
     Write-Output "-  -  -  -  -  -  -"
     Write-Output "-------------------"
     $Name.ToUpper()
@@ -90,11 +91,13 @@ Function Colour{
 do{
     $StatusGood = $true
     Try {
+        # Below Line will continuously loop
+        # Replace XXXX
+        Colour -Name "XXXX"
 
-        # Colour -Name "Name Of Person you Love"
+        # Below Line Loops once
+        #Colour 
 
-        # Loops once
-        Colour 
     } Catch { 
         $StatusGood = $false 
         Write-Output "----------------------------------------------------"
