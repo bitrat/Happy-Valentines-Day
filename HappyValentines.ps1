@@ -3,8 +3,6 @@
 # Displays a Random positive word, per letter, of that person's Name
 # TO DO: Unmentionably Nice things to the Person you Love
 
-# To DO: Create the positive word files (for alphabet characters)
-# TO DO: Fail Positive - Any input will generate positive words (i.e. ' or -)
 # TO DO: Continuous colourful Scrolling 
 
 #ps version 2
@@ -60,20 +58,20 @@ Function Colour{
             $DelimitedColours = Get-Content -Path $CSVColourFileToReadin -ErrorAction Stop
         } catch { 
             Write-Output "No Colours file found."
-        }
-               
+        }         
         $SingleColour = $DelimitedColours.split(",")
         $SingleColour = $SingleColour.Trim()
         #Write-Output "-------------------"
         $RandomColour=Get-Random -InputObject $SingleColour
 
-        #TO DO:  Allow for More than 5 letter Names
+        #Add spacing for the positive output words
         $WhiteSpace = $LetterIndex*2-2
         $Space = $RandomWord.Length
         $Space = $Space + $WhiteSpace
         $RandomWord = $RandomWord.PadLeft($Space)
         Start-Sleep -s 1.2
 
+        # Output Colour Words
         Write-Output "-------------------" 
          Write-Host $WordWithSpaces -ForegroundColor $RandomColour -BackgroundColor DarkBlue
         Write-Output "-------------------"
