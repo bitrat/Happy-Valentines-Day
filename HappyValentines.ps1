@@ -90,7 +90,7 @@ Function Colour{
 do{
     $StatusGood = $true
     Try {
-        # Continuous Looping
+
         # Colour -Name "Name Of Person you Love"
 
         # Loops once
