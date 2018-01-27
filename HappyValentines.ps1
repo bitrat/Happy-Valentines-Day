@@ -3,38 +3,47 @@
 # Displays a Random positive word, per letter, of that person's Name
 # TO DO: Unmentionably Nice things to the Person you Love
 
-# TO DO: Continuous colourful Scrolling 
-
-#ps version 2
+# Make it ps version 2 compatible ? (Nah ! PS2 is not safe)
 #$PSScriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
-
 
 Function Colour{
     Param(
         [Parameter(Mandatory=$true)][string]$Name,
-        [int]$LetterIndex=0
+        [int]$LetterIndex=0,
+        [string]$ColourUsed="white"
     )
 
-
+while ($Name){
     # Display the Name - plain
-    Write-Output "`nControl + C to Quit"
-    Write-Output "-  -  -  -  -  -  -"
-    Write-Output "-------------------"
+    Write-Output "`n-  -  -  -  -  -  - -  -  -  -  -  -  "
+    Write-Output "--------------------------------------"
+    $StartMessage = " Control + C to stop this Love Loop"
+    Write-Host $StartMessage -ForegroundColor red -BackgroundColor DarkBlue
+    Write-Output "-  -  -  -  -  -  - -  -  -  -  -  -  "
+    Write-Output "--------------------------------------"
     $Name.ToUpper()
-    Write-Output "-------------------"
-    Write-Output "-  -  -  -  -  -  -"
+    Write-Output "--------------------------------------"
+    Write-Output "-  -  -  -  -  -  - -  -  -  -  -  -  "
 
     # Extract Letters of the word 
     $Letters = $Name.ToCharArray()
     #$Letters
-    #Write-Output "-------------------"
+    #Write-Output "--------------------------------------"
+
+    #Reset Values for next iteration of the Loop
+    $LetterIndex = 0
+    $WordWithSpaces = ""
+    $RandomWord = ""
+    $WhiteSpace = 1
+    $Space = 1
+    $RandomWord = ""
 
     Foreach ($Letter in $Letters){
     
         $LetterIndex += 1
         #$LetterIndex
         $WordWithSpaces +=$Letter + " "
-       
+    
         $CSVFileName = $Letter+" words.csv"
         $CSVColourFileName = "Colours.csv"
         $CSVFileToReadin = $PSScriptRoot+"\Wordslists\"+$CSVFileName
@@ -53,7 +62,6 @@ Function Colour{
         # Select a word to use randomly
         $RandomWord=Get-Random -InputObject $SingleWord
 
-
         # Select random Colour
         try {
             $DelimitedColours = Get-Content -Path $CSVColourFileToReadin -ErrorAction Stop
@@ -62,28 +70,39 @@ Function Colour{
         }         
         $SingleColour = $DelimitedColours.split(",")
         $SingleColour = $SingleColour.Trim()
-        #Write-Output "-------------------"
-        $RandomColour=Get-Random -InputObject $SingleColour
 
+        Do {
+            $RandomColour=Get-Random -InputObject $SingleColour
+            #Write-Output "--------------------------------------"
+            #Write-Output $RandomColour
+            #Write-Output "--------------------------------------"
+        }
+        Until ($RandomColour -ne $ColourUsed)
+        $ColourUsed = $RandomColour
+
+        #Write-Output "--------------------------------------"
+        #Write-Output $RandomColour $ColourUsed
+        #Write-Output "--------------------------------------"
+        
         #Add spacing for the positive output words
         $WhiteSpace = $LetterIndex*2-2
         $Space = $RandomWord.Length
         $Space = $Space + $WhiteSpace
         $RandomWord = $RandomWord.PadLeft($Space)
-        Start-Sleep -s 1.2
+        Start-Sleep -s 1
 
         # Output Colour Words
-        Write-Output "-------------------" 
-         Write-Host $WordWithSpaces -ForegroundColor $RandomColour -BackgroundColor DarkBlue
-        Write-Output "-------------------"
+        Write-Output "--------------------------------------" 
+        Write-Host $WordWithSpaces -ForegroundColor $RandomColour -BackgroundColor DarkBlue
+        Write-Output "--------------------------------------"
         Write-Host $RandomWord -ForegroundColor $RandomColour -BackgroundColor DarkBlue
 
-        Write-Output "-  -  -  -  -  -  -"
-        Write-Output "-------------------"
+        Write-Output "-  -  -  -  -  -  - -  -  -  -  -  -  "
+        Write-Output "--------------------------------------"
 
         Start-Sleep -s 1.2
-
     } 
+  }
 
  }
 
@@ -91,18 +110,19 @@ Function Colour{
 do{
     $StatusGood = $true
     Try {
-        # Below Line will continuously loop
-        # Replace XXXX
-        Colour -Name "XXXX"
 
-        # Below Line Loops once
-        #Colour 
+        # TESTING - Below Line will continuously loop
+        # Test Value XXXX
+        #Colour -Name "XXXX"
+
+        # Continous Looping of the Person's name that is input
+        Colour 
 
     } Catch { 
         $StatusGood = $false 
-        Write-Output "----------------------------------------------------"
+        Write-Output "------------------------------------------------------"
         Write-Output "ERROR - Please supply the Name of the Person you Love"
-        Write-Output "----------------------------------------------------"
+        Write-Output "------------------------------------------------------"
         # Start Script again
         Set-Location -Path $PSScriptRoot
         .\HappyValentines.ps1
