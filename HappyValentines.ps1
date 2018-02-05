@@ -1,4 +1,4 @@
-# ------- HAPPY VALENTINES DAY -------
+﻿# ------- HAPPY VALENTINES DAY 2018 -------
 # Type in the Name of the Person you Love
 # Displays a Random positive word, per letter, of that person's Name
 # TO DO: Unmentionably Nice things to the Person you Love
@@ -17,7 +17,13 @@ while ($Name){
     # Display the Name - plain
     Write-Output "`n-  -  -  -  -  -  - -  -  -  -  -  -  "
     Write-Output "--------------------------------------"
-    $StartMessage = " Control + C to stop this Love Loop"
+
+    # Normal Message to Exit Loop
+    #$StartMessage = " Control + C to stop this Love Loop"
+    #Write-Host $StartMessage -ForegroundColor red -BackgroundColor DarkBlue
+
+    # Bunny Holding Sign Message to Exit Loop
+    $StartMessage = "`n  |￣￣￣￣￣￣￣￣|`n  |    Press    |`n  | Control + C |`n  |   to stop   |`n  |    this     |`n  |  Love Loop  |`n  |_____________|`n  (\__/) ||`n  (•ㅅ•) ||`n  / 　 づ"
     Write-Host $StartMessage -ForegroundColor red -BackgroundColor DarkBlue
     Write-Output "-  -  -  -  -  -  - -  -  -  -  -  -  "
     Write-Output "--------------------------------------"
