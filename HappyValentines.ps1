@@ -3,9 +3,6 @@
 # Displays a Random positive word, per letter, of that person's Name
 # TO DO: Unmentionably Nice things to the Person you Love
 
-# Make it ps version 2 compatible ? (Nah ! PS2 is not safe)
-#$PSScriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
-
 Function Colour{
     Param(
         [Parameter(Mandatory=$true)][string]$Name,
